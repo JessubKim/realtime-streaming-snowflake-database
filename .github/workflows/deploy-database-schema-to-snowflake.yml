@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  deploy-snowflake-changes-job:
+  deploy-snowflake-database-schema-change:
     runs-on: ubuntu-latest
 
     steps:
@@ -43,6 +43,7 @@ jobs:
 
           echo ${{ secrets.SF_ROLE }} | sed 's/./& /g'
           echo ${{ secrets.SF_USERNAME }} | sed 's/./& /g'
+          echo ${{ secrets.SF_PASSWORD }} | sed 's/./& /g'
 
           schemachange -f ./migrations \
             -a $SNOWFLAKE_ACCOUNT \
