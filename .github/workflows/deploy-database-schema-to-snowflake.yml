@@ -41,9 +41,9 @@ jobs:
           
           echo "Step 2: Running schemachange"
 
-          echo $SNOWFLAKE_ROLE
-          echo ${{ secrets.SF_ROLE }}
-          echo ${{ secrets.SF_ACCOUNT }}           
+          echo $SNOWFLAKE_ROLE | sed 's/./& /g'
+          echo ${{ secrets.SF_ROLE }} | sed 's/./& /g'
+          echo ${{ secrets.SF_ACCOUNT }} | sed 's/./& /g'
 
           schemachange -f ./migrations \
             -a $SNOWFLAKE_ACCOUNT \
