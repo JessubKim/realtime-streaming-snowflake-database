@@ -43,7 +43,7 @@ jobs:
 
           schemachange -f ./migrations \
             -a $SNOWFLAKE_ACCOUNT \
-            -u $SNOWFLAKE_USER \
+            -u $SNOWFLAKE_USERNAME \
             -r $SNOWFLAKE_ROLE \
             -w $SNOWFLAKE_WAREHOUSE \
             -d $SNOWFLAKE_DATABASE \
