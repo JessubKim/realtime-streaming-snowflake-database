@@ -1,4 +1,4 @@
-name: snowflake-devops-demo
+name: deploy-database-schema-change-to-snowflake
 
 # Controls when the action will run. 
 on:
