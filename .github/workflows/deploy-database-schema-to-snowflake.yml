@@ -41,6 +41,8 @@ jobs:
           
           echo "Step 2: Running schemachange"
 
+          echo $SNOWFLAKE_ROLE
+
           schemachange -f ./migrations \
             -a $SNOWFLAKE_ACCOUNT \
             -u $SNOWFLAKE_USERNAME \
