@@ -52,8 +52,7 @@ jobs:
           echo "Verify schemachange config.."
           schemachange verify -f ./migrations \
             --schemachange-connections-file-path ./connections.toml \
-            --schemachange-connection-name PROD \
-            --schemachange-create-change-history-table
+            --schemachange-connection-name PROD
 
           # 2. Run the deployment
           echo "Running schemachange..."
