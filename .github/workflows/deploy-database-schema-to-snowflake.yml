@@ -38,15 +38,15 @@ jobs:
           SNOWFLAKE_ROLE: ${{ secrets.SF_ROLE }}
           SNOWFLAKE_WAREHOUSE: ${{ secrets.SF_WAREHOUSE }}
           SNOWFLAKE_DATABASE: ${{ secrets.SF_DATABASE }}
-          SNOWFLAKE_PRIVATE_KEY_FILE: /tmp/snowflake_key.p8
-          SNOWFLAKE_PRIVATE_KEY_FILE_PWD: ${{ secrets.SF_PRIVATE_KEY_FILE_PWD }}
+          SNOWFLAKE_PRIVATE_KEY_PATH: /tmp/snowflake_key.p8
+          SNOWFLAKE_PRIVATE_KEY_PASSPHRASE: ${{ secrets.SF_PRIVATE_KEY_FILE_PWD }}
         run: |
           
           echo "Creating temporary private key file..."
 
           # 1. Create the private key file from the secret
-          echo "${{ secrets.SF_PRIVATE_KEY }}" > $SNOWFLAKE_PRIVATE_KEY_FILE
-          chmod 600 $SNOWFLAKE_PRIVATE_KEY_FILE
+          echo "${{ secrets.SF_PRIVATE_KEY }}" > $SNOWFLAKE_PRIVATE_KEY_PATH
+          chmod 600 $SNOWFLAKE_PRIVATE_KEY_PATH
 
           echo "Running schemachange..."
 
@@ -57,8 +57,7 @@ jobs:
             -r $SNOWFLAKE_ROLE \
             -w $SNOWFLAKE_WAREHOUSE \
             -d $SNOWFLAKE_DATABASE \
-            --snowflake-authenticator snowflake_jwt \
-            --snowflake-private-key-file $SNOWFLAKE_PRIVATE_KEY_FILE \
+            --snowflake-private-key-path $SNOWFLAKE_PRIVATE_KEY_PATH \
             --create-change-history-table
 
       - name: Clean up private key file
