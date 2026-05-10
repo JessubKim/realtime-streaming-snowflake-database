@@ -48,6 +48,7 @@ jobs:
           echo "Creating temporary private key file..."
 
           # 1. Create the private key file from the secret
+          mkdir -p /.ssh
           echo "${{ secrets.SF_PRIVATE_KEY }}" > $SNOWFLAKE_PRIVATE_KEY_FILE
           chmod 600 $SNOWFLAKE_PRIVATE_KEY_FILE
 
