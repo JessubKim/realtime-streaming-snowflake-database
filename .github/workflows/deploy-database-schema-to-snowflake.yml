@@ -49,9 +49,11 @@ jobs:
 
           # 1. Create the private key file from the secret
           echo "${{ secrets.SF_PRIVATE_KEY }}" > $SNOWFLAKE_PRIVATE_KEY_FILE
-          chmod 600 $SNOWFLAKE_PRIVATE_KEY_FILE
+          chmod 600 $SNOWFLAKE_PRIVATE_KEY_FILE          
 
           echo "Running schemachange..."
+
+          chmod 600 ./connections.toml
 
           # 2. Run the deployment
           schemachange deploy -f ./migrations \
