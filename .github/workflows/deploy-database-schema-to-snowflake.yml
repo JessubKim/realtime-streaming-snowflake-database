@@ -35,6 +35,7 @@ jobs:
         env:
           SNOWFLAKE_ACCOUNT: ${{ secrets.SF_ACCOUNT }}
           SNOWFLAKE_USERNAME: ${{ secrets.SF_USERNAME }}
+          SNOWFLAKE_PASSWORD: ${{ secrets.SF_PASSWORD }}
           SNOWFLAKE_ROLE: ${{ secrets.SF_ROLE }}
           SNOWFLAKE_WAREHOUSE: ${{ secrets.SF_WAREHOUSE }}
           SNOWFLAKE_DATABASE: ${{ secrets.SF_DATABASE }}
@@ -58,3 +59,6 @@ jobs:
             -w $SNOWFLAKE_WAREHOUSE \
             -d $SNOWFLAKE_DATABASE \
             --create-change-history-table
+
+      - name: Clean up private key file
+        run: rm -f /tmp/snowflake_key.p8
