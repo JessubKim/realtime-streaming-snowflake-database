@@ -52,4 +52,9 @@ jobs:
 
           # 2. Run the deployment
           schemachange deploy -f ./migrations \
+            -a $SNOWFLAKE_ACCOUNT \
+            -u $SNOWFLAKE_USERNAME \
+            -r $SNOWFLAKE_ROLE \
+            -w $SNOWFLAKE_WAREHOUSE \
+            -d $SNOWFLAKE_DATABASE \
             --create-change-history-table
