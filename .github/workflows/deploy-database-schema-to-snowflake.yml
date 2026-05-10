@@ -20,7 +20,7 @@ jobs:
       SNOWFLAKE_ROLE: ${{ secrets.SF_ROLE }}
       SNOWFLAKE_WAREHOUSE: ${{ secrets.SF_WAREHOUSE }}
       SNOWFLAKE_DATABASE: ${{ secrets.SF_DATABASE }}
-      SNOWFLAKE_PRIVATE_KEY_FILE: /.ssh/snowflake_prod.p8
+      SNOWFLAKE_PRIVATE_KEY_FILE: ./.ssh/snowflake_prod.p8
       SNOWFLAKE_PRIVATE_KEY_FILE_PWD: ${{ secrets.SF_PRIVATE_KEY_FILE_PWD }}
 
     steps:
