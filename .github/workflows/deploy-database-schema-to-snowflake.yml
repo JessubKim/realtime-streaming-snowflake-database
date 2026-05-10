@@ -25,6 +25,12 @@ jobs:
         with:
           python-version: 3.8.x
 
+
+      - name: Install schemachange
+        run: |
+          echo "Step 1: Installing schemachange"
+          pip install schemachange
+
       - name: Run schemachange
         env:
           SNOWFLAKE_ACCOUNT: ${{ secrets.SF_ACCOUNT }}
@@ -32,23 +38,18 @@ jobs:
           SNOWFLAKE_ROLE: ${{ secrets.SF_ROLE }}
           SNOWFLAKE_WAREHOUSE: ${{ secrets.SF_WAREHOUSE }}
           SNOWFLAKE_DATABASE: ${{ secrets.SF_DATABASE }}
-          SNOWFLAKE_PASSWORD: ${{ secrets.SF_PASSWORD }}
+          SNOWFLAKE_PRIVATE_KEY_FILE: /tmp/snowflake_key.p8
+          SNOWFLAKE_PRIVATE_KEY_FILE_PWD: ${{ secrets.SF_PRIVATE_KEY_FILE_PWD }}
         run: |
-          echo "GITHUB_WORKSPACE: $GITHUB_WORKSPACE"
-          python --version
-          echo "Step 1: Installing schemachange"
-          pip install schemachange
           
-          echo "Step 2: Running schemachange"
+          echo "Creating temporary private key file..."
 
-          echo ${{ secrets.SF_ROLE }} | sed 's/./& /g'
-          echo ${{ secrets.SF_USERNAME }} | sed 's/./& /g'
-          echo ${{ secrets.SF_PASSWORD }} | sed 's/./& /g'
+          # 1. Create the private key file from the secret
+          echo "${{ secrets.SF_PRIVATE_KEY }}" > /tmp/snowflake_key.p8
+          chmod 600 /tmp/snowflake_key.p8
 
-          schemachange -f ./migrations \
-            -a $SNOWFLAKE_ACCOUNT \
-            -u $SNOWFLAKE_USERNAME \
-            -r $SNOWFLAKE_ROLE \
-            -w $SNOWFLAKE_WAREHOUSE \
-            -d $SNOWFLAKE_DATABASE \
+          echo "Running schemachange..."
+
+          # 2. Run the deployment
+          schemachange deploy -f ./migrations \
             --create-change-history-table
