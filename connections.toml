@@ -1,0 +1,4 @@
+# Production environment (using JWT authentication)
+[PROD]
+authenticator = "snowflake_jwt"
+private_key_file = "~/.ssh/snowflake_prod.p8"

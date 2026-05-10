@@ -14,6 +14,14 @@ on:
 jobs:
   deploy-snowflake-database-schema-change:
     runs-on: ubuntu-latest
+    env:
+      SNOWFLAKE_ACCOUNT: ${{ secrets.SF_ACCOUNT }}
+      SNOWFLAKE_USERNAME: ${{ secrets.SF_USERNAME }}
+      SNOWFLAKE_ROLE: ${{ secrets.SF_ROLE }}
+      SNOWFLAKE_WAREHOUSE: ${{ secrets.SF_WAREHOUSE }}
+      SNOWFLAKE_DATABASE: ${{ secrets.SF_DATABASE }}
+      SNOWFLAKE_PRIVATE_KEY_FILE: /.ssh/snowflake_prod.p8
+      SNOWFLAKE_PRIVATE_KEY_FILE_PWD: ${{ secrets.SF_PRIVATE_KEY_FILE_PWD }}
 
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -28,18 +36,13 @@ jobs:
 
       - name: Install schemachange
         run: |
-          echo "Step 1: Installing schemachange"
-          pip install schemachange
+          pip --version
+          echo "Step 1: Upgrade pip"
+          pip install --upgrade pip
+          echo "Step 2: Installing schemachange"          
+          pip install schemachange==4.1.0
 
       - name: Run schemachange
-        env:
-          SNOWFLAKE_ACCOUNT: ${{ secrets.SF_ACCOUNT }}
-          SNOWFLAKE_USERNAME: ${{ secrets.SF_USERNAME }}
-          SNOWFLAKE_ROLE: ${{ secrets.SF_ROLE }}
-          SNOWFLAKE_WAREHOUSE: ${{ secrets.SF_WAREHOUSE }}
-          SNOWFLAKE_DATABASE: ${{ secrets.SF_DATABASE }}
-          SNOWFLAKE_PRIVATE_KEY_FILE: /tmp/snowflake_key.p8
-          SNOWFLAKE_PRIVATE_KEY_FILE_PWD: ${{ secrets.SF_PRIVATE_KEY_FILE_PWD }}
         run: |
           
           echo "Creating temporary private key file..."
@@ -52,13 +55,9 @@ jobs:
 
           # 2. Run the deployment
           schemachange deploy -f ./migrations \
-            -a $SNOWFLAKE_ACCOUNT \
-            -u $SNOWFLAKE_USERNAME \
-            -r $SNOWFLAKE_ROLE \
-            -w $SNOWFLAKE_WAREHOUSE \
-            -d $SNOWFLAKE_DATABASE \
-            --snowflake-private-key-file $SNOWFLAKE_PRIVATE_KEY_FILE \
+            --schemachange-connections-file-path ./connections.toml \
+            --schemachange-connection-name PROD \
             --create-change-history-table
 
       - name: Clean up private key file
-        run: rm -f /tmp/snowflake_key.p8
+        run: rm -f $SNOWFLAKE_PRIVATE_KEY_FILE
