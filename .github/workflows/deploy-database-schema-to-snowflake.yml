@@ -36,7 +36,7 @@ jobs:
 
       - name: Install schemachange
         run: |    
-          pip install schemachange==4.1.0
+          pip install schemachange==4.3.3
 
       - name: Run schemachange
         run: |
@@ -50,8 +50,11 @@ jobs:
           chmod 600 ./connections.toml
 
           echo "Verify schemachange config.."
-          schemachange verify
-                    
+          schemachange verify -f ./migrations \
+            --schemachange-connections-file-path ./connections.toml \
+            --schemachange-connection-name PROD \
+            --schemachange-create-change-history-table
+
           # 2. Run the deployment
           echo "Running schemachange..."
           schemachange deploy -f ./migrations \
