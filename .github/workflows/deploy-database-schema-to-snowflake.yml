@@ -35,11 +35,7 @@ jobs:
 
 
       - name: Install schemachange
-        run: |
-          pip --version
-          echo "Step 1: Upgrade pip"
-          pip install --upgrade pip
-          echo "Step 2: Installing schemachange"          
+        run: |    
           pip install schemachange==4.1.0
 
       - name: Run schemachange
@@ -57,6 +53,11 @@ jobs:
 
           # 2. Run the deployment
           schemachange deploy -f ./migrations \
+            -a $SNOWFLAKE_ACCOUNT \
+            -u $SNOWFLAKE_USERNAME \
+            -r $SNOWFLAKE_ROLE \
+            -w $SNOWFLAKE_WAREHOUSE \
+            -d $SNOWFLAKE_DATABASE \
             --schemachange-connections-file-path ./connections.toml \
             --schemachange-connection-name PROD \
             --create-change-history-table
