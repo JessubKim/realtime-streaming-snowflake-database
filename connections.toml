@@ -1,4 +1,9 @@
 # Production environment (using JWT authentication)
 [PROD]
+account="${SNOWFLAKE_ACCOUNT}"
+user="${SNOWFLAKE_USERNAME}"
+role="${SNOWFLAKE_ROLE}"
+warehouse="${SNOWFLAKE_WAREHOUSE}"
+database="${SNOWFLAKE_DATABASE}"
 authenticator = "snowflake_jwt"
 private_key_file = "~/.ssh/snowflake_prod.p8"

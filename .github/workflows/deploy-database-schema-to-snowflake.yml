@@ -53,14 +53,9 @@ jobs:
 
           # 2. Run the deployment
           schemachange deploy -f ./migrations \
-            -a $SNOWFLAKE_ACCOUNT \
-            -u $SNOWFLAKE_USERNAME \
-            -r $SNOWFLAKE_ROLE \
-            -w $SNOWFLAKE_WAREHOUSE \
-            -d $SNOWFLAKE_DATABASE \
             --schemachange-connections-file-path ./connections.toml \
             --schemachange-connection-name PROD \
-            --create-change-history-table
+            --schemachange-create-change-history-table
 
       - name: Clean up private key file
         run: rm -f $SNOWFLAKE_PRIVATE_KEY_FILE
